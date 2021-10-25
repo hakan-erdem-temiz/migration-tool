@@ -68,16 +68,21 @@ function uploadBatch(page) {
 				url = fileRecord.data.full_url;
 			}
 
-			const savedFile = await apiV9.post("/files/import", {
-				url,
-				data: {
-					filename_download: fileRecord.filename_download,
-					title: fileRecord.title,
-					description: fileRecord.description,
-				},
-			});
-
-			context.fileMap[fileRecord.id] = savedFile.data.data.id;
+			try {
+				const savedFile = await apiV9.post("/files/import", {
+					url,
+					data: {
+						filename_download: fileRecord.filename_download,
+						title: fileRecord.title,
+						description: fileRecord.description,
+					},
+				});
+	
+				context.fileMap[fileRecord.id] = savedFile.data.data.id;
+			} catch (error) {
+				console.log('Upload Error:');
+				console.log(fileRecord);
+			}
 		}
 	};
 }

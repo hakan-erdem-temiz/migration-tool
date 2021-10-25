@@ -6,6 +6,7 @@
   "description": "Migrate from a v8 instance to v9 instance.",
   "main": "index.js",
   "scripts": {
+    "start": ". putSpace.sh && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

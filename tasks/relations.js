@@ -76,9 +76,13 @@ async function migrateRelationsData(context) {
     )
     .flat();
 
-  for (const relation of [...relationsV9, ...systemFields]) {
-    await apiV9.post("/relations", relation);
-  }
-
+        try {
+          for (const relation of [...relationsV9, ...systemFields]) {
+            await apiV9.post("/relations", relation);
+          }
+        
+        } catch (error) {
+          console.log(error);
+        }
   context.relations = [...relationsV9, ...systemFields];
 }
