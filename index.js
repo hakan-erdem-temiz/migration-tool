@@ -79,6 +79,13 @@ export async function writeContext(context, section) {
   );
 }
 
+export async function writeErrorLogs(error, log) {
+  await fs.promises.writeFile(
+    `./logs/${error}.json`,
+    JSON.stringify(log)
+  );
+}
+
 async function setupContext(context) {
   const contextJSON = await fs.promises.readFile(
     commandLineOptions.useContext,
@@ -103,4 +110,5 @@ tasks
   })
   .catch((err) => {
     console.error(err);
+    writeErrorLogs("result", error);
   });

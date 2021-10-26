@@ -1,6 +1,6 @@
 import Listr from "listr";
 import { apiV8, apiV9 } from "../api.js";
-import { writeContext } from "../index.js";
+import { writeContext, writeErrorLogs } from "../index.js";
 
 export async function migrateFiles(context) {
 	return new Listr([
@@ -82,6 +82,7 @@ function uploadBatch(page) {
 			} catch (error) {
 				console.log('Upload Error:');
 				console.log(fileRecord);
+				writeErrorLogs("uploadError", error);
 			}
 		}
 	};

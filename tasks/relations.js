@@ -1,6 +1,6 @@
 import Listr from "listr";
 import { apiV8, apiV9 } from "../api.js";
-import { writeContext } from "../index.js";
+import { writeContext, writeErrorLogs } from "../index.js";
 
 export async function migrateRelations(context) {
   return new Listr([
@@ -75,14 +75,13 @@ async function migrateRelationsData(context) {
         }))
     )
     .flat();
-
-        try {
-          for (const relation of [...relationsV9, ...systemFields]) {
-            await apiV9.post("/relations", relation);
-          }
-        
-        } catch (error) {
-          console.log(error);
-        }
+    for (const relation of [...relationsV9, ...systemFields]) {
+      try {
+        await apiV9.post("/relations", relation);
+      } catch (error) {
+        writeErrorLogs("relations", error);
+        console.log(error);
+      }
+    }
   context.relations = [...relationsV9, ...systemFields];
 }

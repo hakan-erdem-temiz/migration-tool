@@ -2,7 +2,7 @@ import Listr from "listr";
 import { apiV8, apiV9 } from "../api.js";
 import { typeMap } from "../constants/type-map.js";
 import { interfaceMap } from "../constants/interface-map.js";
-import { writeContext } from "../index.js";
+import { writeContext, writeErrorLogs } from "../index.js";
 
 export async function migrateSchema(context) {
   return new Listr([
@@ -228,7 +228,8 @@ function migrateCollection(collection, context) {
       try {
         JSON.parse(details.default_value);
       } catch (ex) {
-        return JSON.stringify(details.default_value);
+        writeErrorLogs("extractValue", error);
+        return JSON.stringify(details);
       }
     }
 

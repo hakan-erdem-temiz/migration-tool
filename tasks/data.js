@@ -1,5 +1,6 @@
 import Listr from "listr";
 import { apiV8, apiV9 } from "../api.js";
+import { writeErrorLogs } from "../index.js";
 
 export async function migrateData(context) {
 	return new Listr([
@@ -182,6 +183,7 @@ async function insertBatch(collection, page, context, task) {
 		}
 	} catch (err) {
 		console.log(err.response.data);
+		writeErrorLogs("items", err.response);
 		// throw Error("Data migration failed. Check directus logs for most insight.")
 	}
 }
